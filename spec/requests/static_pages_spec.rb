@@ -3,6 +3,21 @@ require 'spec_helper'
 describe "StaticPages" do
 
   subject { page }
+
+  it "should have the right links on the layout" do
+    visit root_path
+    click_link "About"
+    page.should have_selector 'title', text: full_title('About Us')
+    click_link "Help"
+    page.should have_selector 'title', text: full_title('Help')
+    click_link "Contact"
+    page.should have_selector 'title', text: full_title('Contact')
+    click_link "Home"
+    click_link "Sign up Now!"
+    page.should have_selector 'title', text: full_title('Sign up')
+    click_link "sample app"
+    page.should have_selector 'title', text: full_title('')
+  end
   
   describe "Home page" do
     before { visit root_path }
