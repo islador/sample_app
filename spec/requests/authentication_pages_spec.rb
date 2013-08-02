@@ -16,8 +16,13 @@ describe "Authentication" do
 		describe "with invalid information" do
 			before { click_button 'Sign In' }
 
-			it { should have_title('Sign in') }
+			it { should have_selector('title', text: 'Sign In') }
 			it { should have_selector('div.alert.alert-error', text: 'Invalid') }
+
+			describe "after visiting another page" do
+				before { click_link "Home" }
+				it { should_not have_selector('div.alert.alert-error') }
+			end
 		end
 
 		describe "with valid information" do
@@ -25,7 +30,7 @@ describe "Authentication" do
 			before do
 				fill_in "Email",	with: user.email.upcase
 				fill_in "Password",	with: user.password
-				click_button "Sign in"
+				click_button "Sign In"
 			end
 
 			it { should have_title(user.name)}
