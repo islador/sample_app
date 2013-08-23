@@ -13,6 +13,14 @@ def valid_signin(user)
 	click_button "Sign In"
 end
 
+def valid_signup(nil)
+	fill_in "Name",			with: "Example User"
+  	fill_in "Email",		with: "user@example.com"
+  	fill_in "Password",		with: "foobar"
+  	fill_in "confirmation",	with: "foobar"
+  	#click_button "Create my account"
+end
+
 Rspec::Matchers.define :have_error_message do |message|
 	match do |page|
 		expect(page).to have_selector('div.alert.alert-error', text: message)
