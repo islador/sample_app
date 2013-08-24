@@ -13,7 +13,7 @@ def valid_signin(user)
 	click_button "Sign In"
 end
 
-def valid_signup(nil)
+def valid_signup
 	fill_in "Name",			with: "Example User"
   	fill_in "Email",		with: "user@example.com"
   	fill_in "Password",		with: "foobar"
