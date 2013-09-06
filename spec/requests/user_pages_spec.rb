@@ -79,6 +79,17 @@ describe "UserPages" do
       it { should have_link('change', href: 'http://gravatar.com/emails') }
     end
 
+    describe "gravatar change link opens new tab" do #added for 9.6.2
+      #it {should have_link('change', href: 'http://gravatar.com/emails', target: '_blank') }
+      #it { should have_selector('a', :href => 'http://gravatar.com/emails', :target => '_blank', :content => 'change')}
+      it { should have_selector("a[href='http://gravatar.com/emails'][target='_blank']") } # http://stackoverflow.com/questions/11313725/how-to-test-html-attributes-with-rspec
+      # https://gist.github.com/them0nk/2166525 's explains the syntax for why this works.
+      #click_link('change')
+      #expect do
+      #  click_link('change')
+      #end.to open_new_tab
+    end
+
     describe "with valid information" do
       let(:new_name)  { "New Name" }
       let(:new_email) { "new@example.com" }
