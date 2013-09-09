@@ -18,18 +18,30 @@ class UsersController < ApplicationController
   end
   
   def new
-  	@user = User.new
+    if signed_in? #added for 9.6.6
+      flash[:error] = "You cannot sign up if you're already signed in."
+      redirect_to root_url
+      #redirect_to users_path #various tests to tease out proper syntax
+      #@user = User.new
+    else
+  	 @user = User.new
+    end
   end
 
   def create
-  	@user = User.new(params[:user])
-  	if @user.save
-      sign_in @user
-  		flash[:success] = "Welcome to the Sample App!"
-  		redirect_to @user
-  	else
-  		render 'new'
-  	end
+    if signed_in? #added for 9.6.6
+      flash[:error] = "You cannot sign up if you're already signed in."
+      redirect_to root_url
+    else
+    	@user = User.new(params[:user])
+    	if @user.save
+        sign_in @user
+    		flash[:success] = "Welcome to the Sample App!"
+    		redirect_to @user
+    	else
+    		render 'new'
+    	end
+    end
   end
 
   def edit

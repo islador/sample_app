@@ -67,6 +67,7 @@ describe "UserPages" do
 
     it { should have_selector('h1',    text: 'Sign up') }
     it { should have_selector('title', text: 'Sign up') }
+
   end
 
   describe "profile page" do
@@ -153,6 +154,20 @@ describe "UserPages" do
 
   describe "signup" do
 
+    describe "with signed in user" do #added tests for 9.6.6
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        sign_in(user)
+        visit signup_path
+      end
+
+      it { should_not have_selector('title', text: 'Sign up') }
+      it { should have_selector('h1', text: 'Welcome to the Sample App')}
+      it {should have_content("You cannot sign up if you're already signed in.")}
+      #expect {visit signup_path}.to redirect_to(users_path) # Various tests to tease out proper syntax.
+      #visit signup_path should redirect_to(root_url)
+    end
+
   	before { visit signup_path }
 
   	let(:submit) { "Create my account" }
@@ -181,6 +196,16 @@ describe "UserPages" do
   	end
 
   	describe "with valid information" do
+      #describe "with signed in user" do # tests for create page access for 9.6.6, failed to devise functional test.
+       # let(:user) {FactoryGirl.create(:user) }
+        #sign_in(user)
+        #valid_signup
+
+        #it { should_not have_selector('title', text: 'Sign up') }
+        #it { should have_selector('h1', text: 'Welcome to the Sample App')}
+        #it {should have_content("You cannot sign up if you're already signed in.")}
+      #end
+
   		before do
         valid_signup
   		end
