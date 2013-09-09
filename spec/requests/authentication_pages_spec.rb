@@ -115,6 +115,12 @@ describe "Authentication" do
 					before { visit users_path }
 					it { should have_selector('title',	text: 'Sign In') }
 				end
+
+				describe "visiting the user's profile" do
+					before { visit user_path(user)}
+					it { should have_selector('title',	text: 'Sign In') }
+					it { should have_selector('div.alert.alert-error',	text: "Please sign in to view user profiles.")}
+				end
 			end
 		end
 

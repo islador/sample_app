@@ -19,7 +19,12 @@ class UsersController < ApplicationController
   end
 
   def show
-  	@user = User.find(params[:id])
+    if signed_in? #added to correct error introduced by adding delete link to user profiles.
+      @user = User.find(params[:id])
+    else
+      flash[:error] = "Please sign in to view user profiles."
+      redirect_to signin_url
+    end
   end
   
   def new
