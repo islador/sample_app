@@ -35,6 +35,10 @@ module SessionsHelper
 	end
 
 	def store_location
-		session[:return_to] = request.url
+		if signed_in? # added for 9.6.8
+			session[:return_to] = current_user #cannot use user_path, don't know why.
+		else
+			session[:return_to] = request.url
+		end
 	end
 end

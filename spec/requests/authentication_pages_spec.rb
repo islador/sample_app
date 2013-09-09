@@ -95,6 +95,19 @@ describe "Authentication" do
 					it "should render the desired protected page" do
 						expect(page).to have_selector('title',	text: 'Edit user')
 					end
+
+					describe "when signing in again" do # added for 9.6.8
+			            before do
+			              delete signout_path
+			              visit signin_path
+			              sign_in(user)
+			            end
+
+			            it "should render the default (profile) page" do
+			            	expect(page).to have_selector('title',	text: user.name)
+			            	#expect(page).to have_selector('h1',	text: 'Welcome to the Sample App')
+			            end
+			        end
 				end
 			end
 
@@ -116,7 +129,7 @@ describe "Authentication" do
 					it { should have_selector('title',	text: 'Sign In') }
 				end
 
-				describe "visiting the user's profile" do
+				describe "visiting the user's profile" do # tests that users must be signed in to view user profiles.
 					before { visit user_path(user)}
 					it { should have_selector('title',	text: 'Sign In') }
 					it { should have_selector('div.alert.alert-error',	text: "Please sign in to view user profiles.")}
