@@ -4,9 +4,14 @@ class UsersController < ApplicationController
   before_filter :admin_user,  only: :destroy
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed."
-    redirect_to users_url
+    if User.find(params[:id]).admin?
+      flash[:error] = "Admins cannot be deleted."
+      redirect_to root_url
+    else
+      User.find(params[:id]).destroy
+      flash[:success] = "User destroyed."
+      redirect_to users_url
+    end
   end
 
   def index

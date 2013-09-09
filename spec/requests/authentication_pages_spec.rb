@@ -63,6 +63,22 @@ describe "Authentication" do
 				specify { expect(response).to redirect_to(root_url) }
 			end
 		end
+
+		describe "as an admin user" do # Exercise 9.6.9
+			let(:user) {FactoryGirl.create(:user) }
+			let(:admin) {FactoryGirl.create(:admin) }
+
+			before { sign_in admin, no_capybara: true }
+
+			describe "submitting a DELETE request targeting an admin to the Users#destroy action" do
+				before { delete user_path(admin) }
+				#it { should have_selector('h1', text: 'Welcome to the Sample App')}
+				#it {should have_selector('div.alert alert-error',	text: 'Admins cannot be deleted.')}
+				#it { should_not have_selector('title', text: 'Sign up') }
+				specify { response.should redirect_to(root_url), 
+                  flash[:error].should =~ /Admins cannot be deleted./i } # http://stackoverflow.com/questions/9956523/ruby-tutorial-ch9-exercise-9-dont-allow-admin-to-delete-themselves
+			end
+		end
 		
 
 		describe "for non-signed-in users" do
