@@ -13,6 +13,11 @@ describe "Authentication" do
 	describe "signin" do
 		before {visit signin_path}
 
+		describe "without logged in user" do # Tests for 9.6.3
+			it { should_not have_link('Profile') }
+			it { should_not have_link('Settings') }
+		end
+
 		describe "with invalid information" do
 			before { click_button 'Sign In' }
 
