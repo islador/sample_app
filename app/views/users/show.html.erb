@@ -6,6 +6,11 @@
 				<%= gravatar_for @user %>
 				<%= @user.name %>
 			</h1>
+			<ul class="users">
+				<% if current_user.admin? && !current_user?(@user)%>
+				|  <%= link_to "delete", @user, method: :delete, data: {confirm: "You sure?" } %>
+				<% end %>
+			</ul>
 		</section>
 	</aside>
 </div>

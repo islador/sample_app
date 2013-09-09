@@ -47,6 +47,17 @@ describe "UserPages" do
           end.to change(User, :count).by(-1)
         end
         it { should_not have_link('delete', href: user_path(admin)) }
+
+        #it "should not be able to delete other admins" do # attempt to add test for admin deleteing another admin.
+         # let(:admin2) { FactoryGirl.create(:admin) }
+          #before do
+           # sign_in admin2
+            #visit users_path
+          #end
+          #expect do
+          #  click_link('delete')
+          #end.not_to change(User, :count)
+        #end
       end
     end
   end
@@ -60,10 +71,35 @@ describe "UserPages" do
 
   describe "profile page" do
   	let(:user) { FactoryGirl.create(:user) }
-  	before { visit user_path(user) }
+  	before do
+     sign_in(user)
+     visit user_path(user)
+   end
 
   	it { should have_selector('h1', 	text: user.name) }
   	it { should have_selector('title', 	text: user.name) }
+
+    describe "delete links" do
+      it { should_not have_link('delete') }
+
+      describe "as an admin user" do
+        let(:user) { FactoryGirl.create(:user) }
+        let(:admin) { FactoryGirl.create(:admin) }
+
+        before do
+          sign_in admin
+          visit user_path(user)
+        end
+
+        it {should have_link('delete', href: user_path(user))}
+        
+        it "should be able to delete another user" do
+          expect do
+            click_link('delete')
+          end.to change(User, :count).by(-1)
+        end
+      end
+    end
   end
 
   describe "edit" do
