@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   def show
     if signed_in? #added to correct error introduced by adding delete link to user profiles.
       @user = User.find(params[:id])
-      @microposts = @user.microposts.paginate(page: params[:page])
+      @microposts = @user.microposts.paginate(page: params[:page]) #added in 10.2.1
     else
       flash[:error] = "Please sign in to view user profiles."
       redirect_to signin_url

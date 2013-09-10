@@ -49,6 +49,7 @@ describe User do
       expect(@user.microposts.to_a).to eq [newer_micropost, older_micropost]
     end
 
+    #Added in 10.2.1
     it "should destroy associated microposts" do
       microposts = @user.microposts.to_a
       @user.destroy
