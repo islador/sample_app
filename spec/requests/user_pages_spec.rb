@@ -116,6 +116,40 @@ describe "UserPages" do
       it { should have_link('change', href: 'http://gravatar.com/emails') }
     end
 
+    #Stack Overflow resource 1 for 9.6.1
+    #expect do
+    #  @user.update_attributes(:admin => true)
+    #end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+    # Source: http://stackoverflow.com/questions/14618302/is-there-a-better-way-to-test-admin-security
+    # failed to handle the error properly.
+
+    #Stack Overflow resource 2 for 9.6.1
+    #describe "accesible attributes" do 
+    #  it "should not allow access to admin" do
+    #    expect do
+    #      User.new(admin: true) 
+    #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error) #expect.should syntax is deprecated, so rewrote.
+    #  end
+    #end
+    # Source: http://stackoverflow.com/questions/10748730/make-rails-class-attribute-inaccessible-rails-tutorial-chapter-9-exercise-1
+    # worked, but contained deprecated expect syntax and acted upon User directly rather then the instanced user.
+
+    describe "forbidden attributes" do
+      let(:params) do
+        { user: { admin: true, password: user.password, password_confirmation: user.password} }
+      end
+      before do
+        sign_in user, no_capybara: true
+      end
+
+      it "should trigger a MassAssignmentSecurity error" do
+        expect do
+          put user_path(user), params
+        end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+
+      end
+    end
+
     describe "gravatar change link opens new tab" do #added for 9.6.2
       #it {should have_link('change', href: 'http://gravatar.com/emails', target: '_blank') }
       #it { should have_selector('a', :href => 'http://gravatar.com/emails', :target => '_blank', :content => 'change')}
