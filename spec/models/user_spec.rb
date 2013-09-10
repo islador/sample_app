@@ -30,6 +30,10 @@ describe User do
   it {should be_valid}
   it {should_not be_admin}
 
+  #added in 10.1.3
+  it { should respond_to(:admin) }
+  it { should respond_to(:microposts) }
+
   describe "with admin attribute set to 'true'" do
     before do
       @user.save!
