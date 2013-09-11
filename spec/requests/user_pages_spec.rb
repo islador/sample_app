@@ -90,7 +90,7 @@ describe "UserPages" do
     end
 
     describe "delete links" do
-      it { should_not have_link('delete') }
+      it { should_not have_link('delete', href: user_path(user)) }
 
       describe "as an admin user" do
         let(:user) { FactoryGirl.create(:user) }
