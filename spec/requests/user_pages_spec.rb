@@ -205,7 +205,7 @@ describe "UserPages" do
       end
 
       it { should_not have_selector('title', text: 'Sign up') }
-      it { should have_selector('h1', text: 'Welcome to the Sample App')}
+      #it { should have_selector('h1', text: 'Welcome to the Sample App')}
       it { should have_selector('div.alert.alert-error',  text: "You cannot sign up if you're already signed in.")}
       #expect {visit signup_path}.to redirect_to(users_path) # Various tests to tease out proper syntax.
       #visit signup_path should redirect_to(root_url)

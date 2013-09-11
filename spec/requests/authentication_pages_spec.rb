@@ -85,15 +85,15 @@ describe "Authentication" do
 			let(:user) { FactoryGirl.create(:user) }
 
 			
-	        describe "in the Microposts controller" do
+	        describe "in the Microposts controller" do #Added 10.3.1
 
-		        describe "submitting to the create action" do
-		          before { post microposts_path }
+		        describe "submitting to the create action" do #added 10.3.1
+		          before { post microposts_path } #why is it microposts here
 		          specify { expect(response).to redirect_to(signin_path) }
 		        end
 
-		        describe "submitting to the destroy action" do
-		          before { delete micropost_path(FactoryGirl.create(:micropost)) }
+		        describe "submitting to the destroy action" do #added 10.3.1
+		          before { delete micropost_path(FactoryGirl.create(:micropost)) } #and micropost here?
 		          specify { expect(response).to redirect_to(signin_path) }
 		        end
 		    end

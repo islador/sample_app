@@ -36,7 +36,8 @@ module SessionsHelper
 
 	def store_location
 		if signed_in? # added for 9.6.8
-			session[:return_to] = current_user #cannot use user_path, don't know why.
+			session[:return_to] = user_path(current_user) #changed 'current_user' as that was
+			# passing the user model in the session and causing a CookieOverload error.
 		else
 			session[:return_to] = request.url
 		end
