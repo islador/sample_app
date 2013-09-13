@@ -89,6 +89,22 @@ describe "UserPages" do
       it { should have_content(user.microposts.count) }
     end
 
+    describe "microposts should paginate" do
+      before (:all) do
+        32.times{FactoryGirl.create(:micropost, user: user, content: "Meowmix")}
+        visit user_path(user)
+      end
+
+      it {should have_selector('div.pagination')}
+      it {should have_selector('title', text: user.name)}
+      it {should have_selector('h3', text: 'Microposts (32)')}
+      #it {should have_selector('div.pagination')} # for some reason order
+      #matters and this test breaks the h3 selector test above it.
+      it {should have_link('2', href: '/users/' + user.id.to_s + '?page=2')} 
+
+      after(:all) {user.microposts.delete_all}
+    end
+
     describe "delete links" do
       it { should_not have_link('delete', href: user_path(user)) }
 

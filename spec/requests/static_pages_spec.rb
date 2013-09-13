@@ -41,11 +41,11 @@ describe "StaticPages" do
         end
       end
 
-      it "should have the proper micropost count" do #added for 10.5.1
+      it "should have the proper micropost count in the sidebar" do #added for 10.5.1
         page.should have_selector('postcount', text: user.microposts.count.to_s)
       end
 
-      describe "micropost pluralization tests" do #added for 10.5.1
+      describe "micropost sidebar pluralization tests" do #added for 10.5.1
         # note: describe blocks are not sandboxed.
         let(:user2) {FactoryGirl.create(:user) } #switch to user2
         before do
@@ -66,6 +66,20 @@ describe "StaticPages" do
           page.should have_selector('postcount', text: 'micropost'.pluralize(user2.microposts.count.to_s))
         end
       end
+
+      describe "microposts should paginate" do
+        before (:all) do
+          30.times{FactoryGirl.create(:micropost, user: user, content: "Meowmix")}
+          visit root_path
+        end
+        after(:all) {user.microposts.delete_all}
+
+        #visit root_path
+        it {should have_selector('postcount', text: '32 microposts')}
+        it {should have_selector('div.pagination')}
+        it {should have_link('2', href: '/?page=2')}
+      end
+      #it {should have_selector('postcount', text: '2 microposts')} # test for after(:all)
     end
   end
   
