@@ -27,7 +27,6 @@ describe "UserPages" do
           expect(page).to have_selector('li', text: user.name)
         end
       end
-      #DatabaseCleaner.clean
     end
 
     describe "delete links" do
@@ -97,6 +96,7 @@ describe "UserPages" do
 
       it {should have_selector('div.pagination')}
       it {should have_selector('title', text: user.name)}
+      debugger
       it {should have_selector('h3', text: 'Microposts (32)')}
       #it {should have_selector('div.pagination')} # for some reason order
       #matters and this test breaks the h3 selector test above it.
@@ -105,7 +105,30 @@ describe "UserPages" do
       after(:all) {user.microposts.delete_all}
     end
 
-    describe "delete links" do
+    describe "micropost delete links" do #added for 10.5.4
+      let(:user) {FactoryGirl.create(:user) }
+      let(:user2) {FactoryGirl.create(:user) }
+      let(:m1) {FactoryGirl.create(:micropost, user: user2, content: "meowmix")}
+
+      before do
+        sign_in user
+        visit user_path(user2)
+      end
+
+      it "should not be visible to other users" do
+        should_not have_link('delete', href: '/microposts/' + m1.id.to_s)
+      end
+
+      it "should be visible to the creator" do
+        sign_in user2
+        visit user_path(user2)
+        should have_link('delete', href: '/microposts/' + m1.id.to_s)
+      end
+
+      #it {should_not have_link('delete', href: '/microposts/' + m1.id.to_s)}
+    end
+
+    describe "user delete links" do
       it { should_not have_link('delete', href: user_path(user)) }
 
       describe "as an admin user" do
@@ -125,6 +148,25 @@ describe "UserPages" do
           end.to change(User, :count).by(-1)
         end
       end
+    end
+  end
+
+  describe "profile page" do
+    describe "micropost delete links" do
+      let(:user) {FactoryGirl.create(:user) }
+      let(:user2) {FactoryGirl.create(:user) }
+      let(:m1) {FactoryGirl.create(:micropost, user: user2, content: "meowmix")}
+
+      before do
+        sign_in user
+        visit user_path(user2)
+      end
+
+      it "should not be visible to other users" do
+        should_not have_link('delete', href: '/microposts/' + m1.id.to_s)
+      end
+
+      #it {should_not have_link('delete', href: '/microposts/' + m1.id.to_s)}
     end
   end
 
