@@ -1,12 +1,12 @@
 <%= form_for(@micropost) do |f| %>
 	<%= render 'shared/error_messages', object: f.object %>
-	<div class="field">
+	<div onkeyup="countChar()" onkeydown="countChar()" class="field">
 		<%= f.text_area :content, placeholder: "Compose new micropost..." %>
 	</div>
-	<div class="buttonbar">
+	<div class="buttonBar">
 		<%= f.submit "Post", class: "btn btn-large brn-primary" %>
-		<div class="counter">	
-			140/140
+		<div class="counter" id="counter">	
+			0/140
 		</div>
 	</div>
 <% end %>
