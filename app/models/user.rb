@@ -18,6 +18,9 @@ class User < ActiveRecord::Base
   # note: 'dependent: :destroy' ensures that all relationships are destroyed when
   # the user is destroyed.
 
+  #added in 11.1.4
+  has_many :followed_users, through: :relationships, source: :followed
+
   attr_accessible :email, :name, :password, :password_confirmation
   has_secure_password
 
@@ -26,6 +29,19 @@ class User < ActiveRecord::Base
 
   def feed
     Micropost.where("user_id = ?", id)
+  end
+
+  #Added in 11.1.4
+  def following?(other_user)
+    relationships.find_by_followed_id(other_user.id)
+  end
+
+  def follow!(other_user)
+    relationships.create!(followed_id: other_user.id)
+  end
+
+  def unfollow!(other_user)
+    relationships.find_by_followed_id(other_user.id).destroy
   end
   
   def User.new_remember_token
