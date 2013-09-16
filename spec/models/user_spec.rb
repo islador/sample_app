@@ -37,6 +37,8 @@ describe User do
   #added in 10.3.3
   it { should respond_to(:feed) }
 
+  #added in 11.1.2
+  it { should respond_to(:relationships) }
 
   #Added in 10.1.4
   describe "micropost associations" do

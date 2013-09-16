@@ -16,4 +16,12 @@ describe Relationship do
   		end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
   	end
   end
+
+  #added in 11.1.2
+  describe "follower methods" do
+  	it { should respond_to(:follower) }
+  	it { should respond_to(:followed) }
+  	its(:follower) {should == follower }
+  	its(:followed) {should == followed }
+  end
 end

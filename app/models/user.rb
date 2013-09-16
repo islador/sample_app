@@ -13,6 +13,11 @@ class User < ActiveRecord::Base
 
   has_many :microposts, dependent: :destroy
 
+  #added in 11.1.2
+  has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  # note: 'dependent: :destroy' ensures that all relationships are destroyed when
+  # the user is destroyed.
+
   attr_accessible :email, :name, :password, :password_confirmation
   has_secure_password
 
