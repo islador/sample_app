@@ -21,6 +21,12 @@ class User < ActiveRecord::Base
   #added in 11.1.4
   has_many :followed_users, through: :relationships, source: :followed
 
+  #added in 11.1.5
+  has_many :reverse_relationships, foreign_key: "followed_id", 
+  class_name: "Relationship", dependent: :destroy
+  has_many :followers, through: :reverse_relationships, source: :follower
+  
+
   attr_accessible :email, :name, :password, :password_confirmation
   has_secure_password
 
