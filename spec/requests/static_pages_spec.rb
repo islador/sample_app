@@ -45,6 +45,16 @@ describe "StaticPages" do
         page.should have_selector('postcount', text: user.microposts.count.to_s)
       end
 
+      describe "follower/following counts" do
+        let(:other_user) {FactoryGirl.create(:user) }
+        before do
+          other_user.follow!(user)
+          visit root_path
+        end
+        it { should have_link("0 following", href: following_user_path(user)) }
+        it { should have_link("1 followers", href: followers_user_path(user)) }
+      end
+
       describe "micropost sidebar pluralization tests" do #added for 10.5.1
         # note: describe blocks are not sandboxed.
         let(:user2) {FactoryGirl.create(:user) } #switch to user2

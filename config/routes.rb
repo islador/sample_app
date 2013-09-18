@@ -1,7 +1,12 @@
 SampleApp::Application.routes.draw do
-  resources :users
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
   resources :sessions, only: [:new, :create, :destroy]
   resources :microposts,  only: [:create, :destroy] #added in 10.3
+  resources :relationships, only: [:create, :destroy] #added in 11.2.2
 
   root to: 'static_pages#home'
 
