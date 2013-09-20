@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   before_create :create_remember_token
 
   def feed
-    Micropost.where("user_id = ?", id)
+    Micropost.from_users_followed_by(self)
   end
 
   #Added in 11.1.4
